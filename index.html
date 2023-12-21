@@ -17,8 +17,8 @@
         // Remove the prefix
         var websiteUrl = url.substring(url.indexOf(prefix) + prefix.length);
         
-        // Remove any trailing "/" and "#"
-        websiteUrl = websiteUrl.replace(/\/#?$/, '');
+        // Remove "/#"
+        websiteUrl = websiteUrl.replace("/#", '');
 
         return websiteUrl;
     }
