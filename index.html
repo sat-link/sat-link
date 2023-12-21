@@ -7,25 +7,28 @@
     <title>Redirect Page</title>
 </head>
 <body>
-Hello World
+
 <script>
-    // Function to parse the URL and extract the websiteurl parameter
-    function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[#&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    // Function to extract the websiteurl from the URL
+    function getWebsiteUrl() {
+        var url = window.location.href;
+        var prefix = "https://sat-link.github.io/sat-link/";
+        
+        // Remove the prefix
+        var websiteUrl = url.substring(url.indexOf(prefix) + prefix.length);
+        
+        // Remove any trailing "/" and "#"
+        websiteUrl = websiteUrl.replace(/\/#?$/, '');
+
+        return websiteUrl;
     }
 
     // Function to handle redirection
     function redirectToWebsite() {
-        var websiteUrl = getParameterByName("websiteurl");
+        var websiteUrl = getWebsiteUrl();
 
-        // Check if websiteurl is present in the URL
-        if (websiteUrl !== null && websiteUrl !== "") {
+        // Check if websiteurl is present
+        if (websiteUrl !== "") {
             // Fetch data.json
             fetch("https://sat-link.github.io/sat-link/data.json")
                 .then(response => response.json())
