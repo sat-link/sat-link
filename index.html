@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect Page</title>
+</head>
+<body>
 Hello World
+<script>
+    // Function to parse the URL and extract the websiteurl parameter
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[#&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    // Function to handle redirection
+    function redirectToWebsite() {
+        var websiteUrl = getParameterByName("websiteurl");
+
+        // Check if websiteurl is present in the URL
+        if (websiteUrl !== null && websiteUrl !== "") {
+            // Fetch data.json
+            fetch("https://sat-link.github.io/sat-link/data.json")
+                .then(response => response.json())
+                .then(data => {
+                    // Check if websiteurl is a key in data.json
+                    if (data.hasOwnProperty(websiteUrl)) {
+                        // Redirect to the value of the key
+                        window.location.href = data[websiteUrl];
+                    }
+                })
+                .catch(error => console.error("Error fetching data.json:", error));
+        }
+    }
+
+    // Call the redirection function when the page loads
+    redirectToWebsite();
+</script>
+
+</body>
+</html>
